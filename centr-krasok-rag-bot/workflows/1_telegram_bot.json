@@ -1,0 +1,337 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Telegram Trigger1').item.json.message.chat.id.toString() }}",
+        "contextWindowLength": 10
+      },
+      "id": "8483b6fe-6ca3-4050-a387-828e0c629319",
+      "name": "Postgres Chat Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        4240,
+        -1024
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "jWMCt3Dk4zhuBOtZ",
+          "name": "web_site_dash"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "База знаний компании Центр Красок #1. Используй этот инструмент при КАЖДОМ вопросе пользователя — он ищет релевантную информацию о компании, услугах, ценах, брендах, контактах. Передавай туда суть вопроса пользователя.",
+        "topK": 7,
+        "options": {}
+      },
+      "id": "0227eb04-fa0e-4d35-87f0-31d1f967c42e",
+      "name": "knowledge_base_tool",
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
+      "typeVersion": 1.3,
+      "position": [
+        4400,
+        -1024
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "jWMCt3Dk4zhuBOtZ",
+          "name": "web_site_dash"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "id": "8f609c28-bb27-44f9-bc32-99a24555fc19",
+      "name": "Telegram Trigger1",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        3584,
+        -1232
+      ],
+      "webhookId": "telegram-rag-bot",
+      "credentials": {
+        "telegramApi": {
+          "id": "qFinOnp3cvoMWOei",
+          "name": "test_samruk"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT is_enabled, system_prompt FROM bot_settings ORDER BY id DESC LIMIT 1;",
+        "options": {}
+      },
+      "id": "b70545b7-113a-4737-9b01-40bddcf7d5c2",
+      "name": "Get Bot Settings2",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        3808,
+        -1232
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "jWMCt3Dk4zhuBOtZ",
+          "name": "web_site_dash"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "ec",
+              "leftValue": "={{ $json.is_enabled }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "84871188-0011-464a-9894-79d672e0dbf9",
+      "name": "Bot Enabled?1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        4016,
+        -1232
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger1').item.json.message.chat.id }}",
+        "text": "🤖 Бот временно отключён администратором. Попробуйте позже.",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "id": "ec6e3fb8-b6f0-4546-a553-679835b0af47",
+      "name": "Bot Disabled Reply1",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        3936,
+        -800
+      ],
+      "webhookId": "8a1c22c7-2ab8-4733-8d7c-c1a5771debbf",
+      "credentials": {
+        "telegramApi": {
+          "id": "qFinOnp3cvoMWOei",
+          "name": "test_samruk"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Telegram Trigger1').item.json.message.text }}",
+        "options": {
+          "systemMessage": "={{ $('Get Bot Settings2').item.json.system_prompt }}\n\nВАЖНО: При каждом вопросе пользователя обязательно используй инструмент knowledge_base_tool — он ищет информацию в базе знаний компании Центр Красок #1. Передавай туда суть вопроса.\n\nОтвечай на основе найденных документов. Если в базе есть хоть частично релевантная информация — используй её для ответа. Не отказывайся от ответа сразу.\n\nЕсли информации действительно нет — скажи: \"У меня нет точной информации по этому вопросу. Свяжитесь с нами: +7 (777) 292-84-01 или info@centr-krasok.kz\".\n\nОтвечай на языке вопроса (русский / казахский / английский). Кратко, 2-5 предложений. Без эмодзи."
+        }
+      },
+      "id": "ddddddb9-512f-4639-a0e9-005a122f54dd",
+      "name": "AI Agent1",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        4240,
+        -1280
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {
+          "temperature": 0.2
+        }
+      },
+      "id": "54043d1c-1fec-43d5-a798-cb62744b6b7c",
+      "name": "OpenAI Chat Model1",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        4112,
+        -960
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "2CC3ugMnHdGlBbRK",
+          "name": "test_api"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger1').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "id": "e424d705-f805-4128-90f1-82f5530515f4",
+      "name": "Send Telegram Reply1",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        4816,
+        -1312
+      ],
+      "webhookId": "ac767e98-43a1-485f-808f-df3280cab531",
+      "credentials": {
+        "telegramApi": {
+          "id": "qFinOnp3cvoMWOei",
+          "name": "test_samruk"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "85a96381-9e56-4d68-92aa-04e8faef9dc2",
+      "name": "Embeddings OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        4496,
+        -832
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "2CC3ugMnHdGlBbRK",
+          "name": "test_api"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "knowledge_base_tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Get Bot Settings2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Bot Settings2": {
+      "main": [
+        [
+          {
+            "node": "Bot Enabled?1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Bot Enabled?1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Bot Disabled Reply1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Send Telegram Reply1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "knowledge_base_tool",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4b2f9159a30002693dd71ebee84388e216f4e8ec09e43e342b6aae2d1f513666"
+  }
+}

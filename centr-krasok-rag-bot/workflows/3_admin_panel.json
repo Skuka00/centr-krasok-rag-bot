@@ -1,0 +1,932 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "path": "admin",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "1122d998-57a8-46b3-bf51-03b6ab41848d",
+      "name": "GET /admin",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        2128,
+        368
+      ],
+      "webhookId": "admin-login-page"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "<!doctype html>\n<html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n<title>Вход — RAG Admin</title>\n<link href=\"https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600;700&display=swap\" rel=\"stylesheet\">\n<style>\n*{margin:0;padding:0;box-sizing:border-box}\n:root{--bg:#080b14;--bd:rgba(255,255,255,0.08);--ac:#6c63ff;--ac2:#a855f7;--tx:#e8eaf6;--mu:rgba(232,234,246,0.45);--dg:#ff4d6d}\nbody{font-family:'Geologica',sans-serif;background:var(--bg);min-height:100vh;display:flex;align-items:center;justify-content:center;color:var(--tx)}\n.orb{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none}\n.o1{width:500px;height:500px;background:radial-gradient(circle,rgba(108,99,255,0.18),transparent 70%);top:-100px;left:-100px}\n.o2{width:400px;height:400px;background:radial-gradient(circle,rgba(168,85,247,0.15),transparent 70%);bottom:-80px;right:-80px}\n.card{position:relative;background:rgba(255,255,255,0.03);backdrop-filter:blur(24px);border:1px solid var(--bd);border-radius:24px;padding:48px 40px;width:100%;max-width:420px;box-shadow:0 32px 80px rgba(0,0,0,0.4)}\n.logo{text-align:center;margin-bottom:36px}\n.li{width:64px;height:64px;background:linear-gradient(135deg,var(--ac),var(--ac2));border-radius:18px;display:inline-flex;align-items:center;justify-content:center;margin-bottom:16px;box-shadow:0 8px 32px rgba(108,99,255,0.35);color:#fff;font-size:28px;font-weight:700}\nh1{font-size:24px;font-weight:600}\n.sub{font-size:14px;color:var(--mu);margin-top:6px}\nlabel{display:block;font-size:12px;font-weight:500;color:var(--mu);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}\ninput{width:100%;padding:14px 16px;background:rgba(255,255,255,0.05);border:1px solid var(--bd);border-radius:12px;color:var(--tx);font-family:inherit;font-size:15px;outline:none;transition:all .2s}\ninput:focus{border-color:var(--ac);background:rgba(108,99,255,0.08);box-shadow:0 0 0 3px rgba(108,99,255,0.15)}\nbutton{width:100%;padding:15px;background:linear-gradient(135deg,var(--ac),var(--ac2));border:none;border-radius:12px;color:#fff;font-family:inherit;font-size:15px;font-weight:600;cursor:pointer;margin-top:20px}\nbutton:hover{transform:translateY(-1px);box-shadow:0 12px 36px rgba(108,99,255,0.45)}\n.err{display:none;background:rgba(255,77,109,0.1);border:1px solid rgba(255,77,109,0.3);border-radius:10px;padding:12px 16px;font-size:13px;color:var(--dg);margin-bottom:16px;text-align:center}\n.show .err{display:block}\n</style></head><body>\n<div class=\"orb o1\"></div><div class=\"orb o2\"></div>\n<div class=\"card\">\n<div class=\"logo\"><div class=\"li\">🔒</div>\n<h1>RAG Admin Panel</h1><p class=\"sub\">Управление ботом Центра Красок</p></div>\n<form method=\"POST\" action=\"/webhook/admin-login\" id=\"lf\">\n<div class=\"err\">Неверный пароль</div>\n<label>Пароль</label>\n<input type=\"password\" name=\"password\" placeholder=\"••••••••\" required autofocus>\n<button type=\"submit\">Войти →</button>\n</form></div>\n<script>if(new URLSearchParams(location.search).get('e')==='1')document.getElementById('lf').classList.add('show');</script>\n</body></html>",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
+              }
+            ]
+          }
+        }
+      },
+      "id": "8b6e1cba-1f85-4552-9772-a677f2a9cc8e",
+      "name": "Login Page HTML",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        2352,
+        368
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "admin-login",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "88825826-02f1-4f88-875a-375e8eb66cba",
+      "name": "POST /admin-login",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        2128,
+        576
+      ],
+      "webhookId": "admin-login-check"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "p1",
+              "leftValue": "={{ $json.body.password }}",
+              "rightValue": "Mercedes123",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "f7ab9563-d6c1-4218-a325-64c0c479f7c1",
+      "name": "Check Password",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2352,
+        576
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "<!doctype html><meta charset=\"utf-8\"><meta http-equiv=\"refresh\" content=\"0;url=/webhook/admin-panel\">",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
+              }
+            ]
+          }
+        }
+      },
+      "id": "f3516cee-e692-4ee1-9f3a-86c94d806dda",
+      "name": "Redirect to Panel",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        2576,
+        528
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "<!doctype html><meta charset=\"utf-8\"><meta http-equiv=\"refresh\" content=\"0;url=/webhook/admin?e=1\">",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
+              }
+            ]
+          }
+        }
+      },
+      "id": "19c1f250-db02-42ba-8175-383aa154fdf6",
+      "name": "Redirect Fail",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        2576,
+        640
+      ]
+    },
+    {
+      "parameters": {
+        "path": "admin-panel",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "696cca86-c60a-45c4-b604-f34497f48736",
+      "name": "GET /admin-panel",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        2128,
+        832
+      ],
+      "webhookId": "admin-panel-page"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT (SELECT is_enabled FROM bot_settings ORDER BY id DESC LIMIT 1) AS is_enabled, (SELECT system_prompt FROM bot_settings ORDER BY id DESC LIMIT 1) AS prompt, (SELECT COUNT(*) FROM documents) AS doc_count, (SELECT COUNT(*) FROM n8n_vectors) AS chunk_count, (SELECT COUNT(*) FROM n8n_chat_histories) AS msg_count;",
+        "options": {}
+      },
+      "id": "7da35b8a-a789-4983-9c63-83168f3e25d9",
+      "name": "Get Stats",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        2352,
+        752
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "jWMCt3Dk4zhuBOtZ",
+          "name": "web_site_dash"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT id, LEFT(system_prompt, 200) AS preview, created_at, note FROM prompt_versions ORDER BY created_at DESC LIMIT 10;",
+        "options": {}
+      },
+      "id": "27c19990-52f5-4d05-87e8-f9dd9912c015",
+      "name": "Get Prompt Versions",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        2352,
+        992
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "jWMCt3Dk4zhuBOtZ",
+          "name": "web_site_dash"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "id": "c4799417-5253-4ced-981c-b3bae34aaced",
+      "name": "Merge1",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        2576,
+        880
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const stats = $('Get Stats').first().json;\nconst docs = $('Get Documents3').all().map(r => r.json).filter(r => r && r.id);\nconst versions = $('Get Prompt Versions').all().map(r => r.json).filter(r => r && r.id);\n\nfunction esc(s){\n  return String(s == null ? '' : s)\n    .replace(/&/g,'&amp;')\n    .replace(/</g,'&lt;')\n    .replace(/>/g,'&gt;')\n    .replace(/\"/g,'&quot;')\n    .replace(/'/g,'&#39;');\n}\n\nfunction fmtDate(d){\n  if(!d) return '—';\n  return new Date(d).toLocaleString('ru-RU',{\n    day:'2-digit',month:'2-digit',year:'numeric',\n    hour:'2-digit',minute:'2-digit'\n  });\n}\n\nconst isOn = stats.is_enabled === true || stats.is_enabled === 't' || stats.is_enabled === 'true';\n\nconst docsRows = docs.length === 0\n  ? '<tr><td colspan=\"5\" style=\"padding:40px;text-align:center;color:rgba(232,234,246,0.35)\">Документов пока нет — загрузите первый файл</td></tr>'\n  : docs.map(d => '<tr><td><span class=\"iid\">#' + d.id + '</span></td><td><div style=\"font-weight:600\">' + esc(d.filename) + '</div><div style=\"font-size:11px;color:var(--mu);margin-top:2px\">' + esc(d.file_type || '—') + '</div></td><td><span class=\"cbadge\">' + (d.chunks_count || 0) + ' чанков</span></td><td><span style=\"font-size:12px;color:var(--mu)\">' + fmtDate(d.uploaded_at) + '</span></td><td><button class=\"abtn abtn-del\" data-id=\"' + d.id + '\" data-name=\"' + esc(d.filename) + '\">🗑</button></td></tr>').join('');\n\nconst versionsRows = versions.length === 0\n  ? '<div style=\"padding:24px;text-align:center;color:var(--mu);font-size:13px\">История пока пуста</div>'\n  : versions.map(v => '<div class=\"ver-item\"><div style=\"flex:1\"><div style=\"font-size:12px;color:var(--mu);margin-bottom:4px\">' + fmtDate(v.created_at) + (v.note ? ' · ' + esc(v.note) : '') + '</div><div style=\"font-size:13px;line-height:1.5\">' + esc(v.preview || '') + '</div></div><button class=\"btn btng\" data-rollback=\"' + v.id + '\">↶ Откатить</button></div>').join('');\n\nconst html = [\n'<!doctype html>',\n'<html lang=\"ru\"><head>',\n'<meta charset=\"utf-8\">',\n'<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">',\n'<title>RAG Admin</title>',\n'<link href=\"https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600;700;800&display=swap\" rel=\"stylesheet\">',\n'<style>',\n'*{margin:0;padding:0;box-sizing:border-box}',\n':root{--bg:#080b14;--bg2:#0d1120;--sf:rgba(255,255,255,0.04);--sf2:rgba(255,255,255,0.07);--bd:rgba(255,255,255,0.08);--bd2:rgba(255,255,255,0.15);--ac:#6c63ff;--ac2:#a855f7;--ac3:#06b6d4;--tx:#e8eaf6;--mu:rgba(232,234,246,0.45);--dg:#ff4d6d;--ok:#00d68f}',\n'body{font-family:Geologica,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh}',\n'.orb{position:fixed;border-radius:50%;filter:blur(100px);pointer-events:none;z-index:0}',\n'.o1{width:600px;height:600px;background:radial-gradient(circle,rgba(108,99,255,0.12),transparent 70%);top:-200px;left:-200px}',\n'.o2{width:500px;height:500px;background:radial-gradient(circle,rgba(168,85,247,0.1),transparent 70%);bottom:-100px;right:-100px}',\n'.app{position:relative;z-index:1;display:flex;min-height:100vh}',\n'.sb{width:255px;background:rgba(6,9,18,0.97);border-right:1px solid var(--bd);backdrop-filter:blur(20px);display:flex;flex-direction:column;position:sticky;top:0;height:100vh}',\n'.sl{padding:26px 22px 18px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--bd)}',\n'.lm{width:38px;height:38px;background:linear-gradient(135deg,var(--ac),var(--ac2));border-radius:11px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(108,99,255,0.35);color:#fff;font-weight:700;font-size:18px}',\n'.lt{font-size:14px;font-weight:700}.ls{font-size:11px;color:var(--mu)}',\n'.snav{padding:14px 10px;flex:1}',\n'.nl{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--mu);padding:0 12px;margin:14px 0 6px}',\n'.ni{display:flex;align-items:center;gap:11px;padding:10px 13px;border-radius:11px;cursor:pointer;font-size:13.5px;color:var(--mu);transition:all .18s;margin-bottom:2px;border:1px solid transparent;text-decoration:none}',\n'.ni:hover{color:var(--tx);background:var(--sf2);border-color:var(--bd)}',\n'.ni.active{color:var(--tx);background:rgba(108,99,255,0.14);border-color:rgba(108,99,255,0.28)}',\n'.ni .ic{width:20px;text-align:center;font-size:15px}',\n'.sf{padding:14px 10px;border-top:1px solid var(--bd)}',\n'.uc{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:11px;background:var(--sf)}',\n'.uav{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,var(--ac),var(--ac2));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#fff}',\n'.un{font-size:13px;font-weight:600}.ur{font-size:11px;color:var(--mu)}',\n'.ulo{margin-left:auto;background:none;border:none;cursor:pointer;color:var(--mu);padding:4px 8px;border-radius:6px;font-size:14px}',\n'.ulo:hover{color:var(--dg)}',\n'.main{flex:1;display:flex;flex-direction:column;min-width:0}',\n'.tb{height:62px;border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 28px;gap:14px;background:rgba(8,11,20,0.75);backdrop-filter:blur(14px);position:sticky;top:0;z-index:10}',\n'.pt{font-size:17px;font-weight:700;flex:1}',\n'.bs{display:flex;align-items:center;gap:10px;padding:6px 12px 6px 6px;background:var(--sf);border:1px solid var(--bd);border-radius:30px}',\n'.tg{position:relative;width:44px;height:24px;cursor:pointer;display:inline-block}',\n'.tg input{opacity:0;width:0;height:0;position:absolute}',\n'.tgt{position:absolute;inset:0;background:rgba(255,77,109,0.18);border:1px solid rgba(255,77,109,0.32);border-radius:12px;transition:all .22s}',\n'.tg input:checked+.tgt{background:rgba(0,214,143,0.18);border-color:rgba(0,214,143,0.38)}',\n'.tgh{position:absolute;width:18px;height:18px;background:var(--dg);border-radius:50%;top:2px;left:2px;transition:all .22s;box-shadow:0 2px 5px rgba(0,0,0,0.4);pointer-events:none}',\n'.tg input:checked~.tgh{transform:translateX(20px);background:var(--ok)}',\n'.bsl{font-size:13px;font-weight:600}',\n'.ct{padding:28px;flex:1}',\n'.pg{display:none}.pg.active{display:block}',\n'.wh h2{font-size:26px;font-weight:800;margin-bottom:5px}',\n'.wh p{color:var(--mu);font-size:14px;margin-bottom:28px}',\n'.sr{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:28px}',\n'.sc{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:18px;display:flex;align-items:center;gap:14px}',\n'.si{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff}',\n'.sv{font-size:22px;font-weight:800}.sl2{font-size:12px;color:var(--mu)}',\n'.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;gap:12px;flex-wrap:wrap}',\n'.st{font-size:18px;font-weight:700}.ss{font-size:12.5px;color:var(--mu);margin-top:2px}',\n'.btn{display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:9px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;border:1px solid transparent;text-decoration:none}',\n'.btnp{background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;border:none;box-shadow:0 4px 14px rgba(108,99,255,0.3)}',\n'.btnp:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(108,99,255,0.42)}',\n'.btng{background:var(--sf);color:var(--mu);border-color:var(--bd)}',\n'.btng:hover{color:var(--tx);background:var(--sf2)}',\n'.tw{background:var(--sf);border:1px solid var(--bd);border-radius:14px;overflow:hidden}',\n'table{width:100%;border-collapse:collapse}',\n'thead th{font-size:10.5px;text-transform:uppercase;letter-spacing:1px;color:var(--mu);font-weight:600;padding:13px 18px;text-align:left;border-bottom:1px solid var(--bd)}',\n'tbody tr{border-bottom:1px solid rgba(255,255,255,0.04)}',\n'tbody tr:last-child{border-bottom:none}',\n'tbody tr:hover{background:rgba(255,255,255,0.02)}',\n'tbody td{padding:14px 18px;font-size:13px;vertical-align:middle}',\n'.iid{font-weight:700;color:var(--ac3);font-size:13.5px}',\n'.cbadge{display:inline-flex;padding:3px 10px;border-radius:20px;background:rgba(6,182,212,0.1);color:#67e8f9;font-size:11px;font-weight:600;border:1px solid rgba(6,182,212,0.2)}',\n'.abtn{display:inline-flex;padding:7px 9px;border-radius:8px;border:1px solid;cursor:pointer;background:none;transition:all .18s;font-size:14px}',\n'.abtn-del{color:var(--dg);border-color:rgba(255,77,109,0.25);background:rgba(255,77,109,0.07)}',\n'.abtn-del:hover{background:rgba(255,77,109,0.18)}',\n'.uz{background:var(--sf);border:2px dashed var(--bd2);border-radius:14px;padding:40px 24px;text-align:center;cursor:pointer;transition:all .22s;margin-bottom:24px;display:block}',\n'.uz:hover,.uz.drag{border-color:var(--ac);background:rgba(108,99,255,0.05)}',\n'.uz .uzi{font-size:42px;margin-bottom:12px;opacity:0.5}',\n'.uz h3{font-size:15px;font-weight:600;margin-bottom:4px}',\n'.uz p{font-size:12.5px;color:var(--mu)}',\n'.uz input{display:none}',\n'.pc{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:24px;margin-bottom:20px}',\n'.pc textarea{width:100%;min-height:280px;padding:16px;background:var(--bg2);border:1px solid var(--bd);border-radius:10px;color:var(--tx);font-family:Courier New,monospace;font-size:13px;line-height:1.6;outline:none;resize:vertical}',\n'.pc textarea:focus{border-color:var(--ac);box-shadow:0 0 0 3px rgba(108,99,255,0.12)}',\n'.ver-item{display:flex;align-items:center;gap:14px;padding:14px 18px;border:1px solid var(--bd);border-radius:11px;margin-bottom:10px;background:var(--sf)}',\n'.tc{position:fixed;top:18px;right:18px;z-index:999;display:flex;flex-direction:column;gap:7px;pointer-events:none}',\n'.tt{background:#111524;border:1px solid var(--bd2);border-radius:11px;padding:11px 16px;font-size:13px;font-weight:500;min-width:200px;box-shadow:0 6px 28px rgba(0,0,0,0.45);animation:ts .25s ease}',\n'.tts{border-color:rgba(0,214,143,0.28);color:var(--ok)}',\n'.tte{border-color:rgba(255,77,109,0.28);color:var(--dg)}',\n'.tti{border-color:rgba(108,99,255,0.28);color:#a78bfa}',\n'@keyframes ts{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:translateX(0)}}',\n'.spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.2);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite}',\n'@keyframes sp{to{transform:rotate(360deg)}}',\n'</style></head><body>',\n'<div class=\"orb o1\"></div><div class=\"orb o2\"></div>',\n'<div class=\"tc\" id=\"tcc\"></div>',\n'<div class=\"app\">',\n'<aside class=\"sb\">',\n'<div class=\"sl\"><div class=\"lm\">RA</div><div><div class=\"lt\">RAG Admin</div><div class=\"ls\">Управление ботом</div></div></div>',\n'<nav class=\"snav\">',\n'<div class=\"nl\">Меню</div>',\n'<a class=\"ni active\" data-pg=\"home\" href=\"#\"><span class=\"ic\">🏠</span>Главная</a>',\n'<a class=\"ni\" data-pg=\"docs\" href=\"#\"><span class=\"ic\">📁</span>База знаний</a>',\n'<a class=\"ni\" data-pg=\"prompt\" href=\"#\"><span class=\"ic\">⭐</span>Промпт</a>',\n'</nav>',\n'<div class=\"sf\"><div class=\"uc\"><div class=\"uav\">A</div><div><div class=\"un\">Администратор</div><div class=\"ur\">Полный доступ</div></div><button class=\"ulo\" id=\"logout\">⎋</button></div></div>',\n'</aside>',\n'<main class=\"main\">',\n'<div class=\"tb\"><div class=\"pt\" id=\"pt\">🏠 Главная</div>',\n'<div class=\"bs\"><label class=\"tg\"><input type=\"checkbox\" id=\"bt\"' + (isOn ? ' checked' : '') + '><div class=\"tgt\"></div><div class=\"tgh\"></div></label><span class=\"bsl\" id=\"bsl\">' + (isOn ? '🟢 Бот включён' : '🔴 Бот выключен') + '</span></div></div>',\n'<div class=\"ct\">',\n'<div class=\"pg active\" id=\"pg-home\">',\n'<div class=\"wh\"><h2>Добро пожаловать 👋</h2><p>Управляйте Telegram-ботом и базой знаний</p></div>',\n'<div class=\"sr\">',\n'<div class=\"sc\"><div class=\"si\" style=\"background:linear-gradient(135deg,#0891b2,#06b6d4)\">📁</div><div><div class=\"sv\">' + (stats.doc_count || 0) + '</div><div class=\"sl2\">Документов</div></div></div>',\n'<div class=\"sc\"><div class=\"si\" style=\"background:linear-gradient(135deg,#7c3aed,#a855f7)\">🧩</div><div><div class=\"sv\">' + (stats.chunk_count || 0) + '</div><div class=\"sl2\">Чанков в БЗ</div></div></div>',\n'<div class=\"sc\"><div class=\"si\" style=\"background:linear-gradient(135deg,#059669,#10b981)\">💬</div><div><div class=\"sv\">' + (stats.msg_count || 0) + '</div><div class=\"sl2\">Сообщений</div></div></div>',\n'<div class=\"sc\"><div class=\"si\" style=\"background:linear-gradient(135deg,' + (isOn ? '#059669,#10b981' : '#dc2626,#ef4444') + ')\">' + (isOn ? '✓' : '✕') + '</div><div><div class=\"sv\">' + (isOn ? 'ON' : 'OFF') + '</div><div class=\"sl2\">Статус бота</div></div></div>',\n'</div></div>',\n'<div class=\"pg\" id=\"pg-docs\">',\n'<div class=\"sh\"><div><div class=\"st\">База знаний</div><div class=\"ss\">Загрузите .txt — бот будет использовать для ответов</div></div></div>',\n'<label class=\"uz\" id=\"uz\" for=\"fi\">',\n'<input type=\"file\" id=\"fi\" accept=\".txt,.pdf,.docx\">',\n'<div class=\"uzi\">📤</div>',\n'<h3>Перетащите файл или нажмите для выбора</h3><p>txt, pdf, docx · до 10 МБ</p></label>',\n'<div class=\"tw\"><table><thead><tr><th>ID</th><th>Файл</th><th>Чанки</th><th>Загружен</th><th></th></tr></thead><tbody>' + docsRows + '</tbody></table></div>',\n'</div>',\n'<div class=\"pg\" id=\"pg-prompt\">',\n'<div class=\"sh\"><div><div class=\"st\">Системный промпт</div><div class=\"ss\">Инструкции для бота — как отвечать пользователям</div></div><button class=\"btn btnp\" id=\"spb\">💾 Сохранить</button></div>',\n'<div class=\"pc\"><textarea id=\"pte\">' + esc(stats.prompt || '') + '</textarea></div>',\n'<div class=\"sh\" style=\"margin-top:32px\"><div><div class=\"st\">История версий</div><div class=\"ss\">Последние 10 версий — можно откатить</div></div></div>',\nversionsRows,\n'</div>',\n'</div></main></div>',\n'<script>',\n'function go(p){document.querySelectorAll(\".pg\").forEach(function(x){x.classList.remove(\"active\");});var el=document.getElementById(\"pg-\"+p);if(el)el.classList.add(\"active\");document.querySelectorAll(\".ni\").forEach(function(x){if(x.getAttribute(\"data-pg\")===p){x.classList.add(\"active\");}else{x.classList.remove(\"active\");}});var titles={home:\"🏠 Главная\",docs:\"📁 База знаний\",prompt:\"⭐ Промпт\"};document.getElementById(\"pt\").textContent=titles[p];}',\n'document.querySelectorAll(\".ni[data-pg]\").forEach(function(a){a.addEventListener(\"click\",function(e){e.preventDefault();go(this.getAttribute(\"data-pg\"));});});',\n'document.getElementById(\"logout\").addEventListener(\"click\",function(){location.href=\"/webhook/admin\";});',\n'function ts(m,t){var d=document.createElement(\"div\");d.className=\"tt \"+(t===\"error\"?\"tte\":t===\"info\"?\"tti\":\"tts\");d.textContent=m;document.getElementById(\"tcc\").appendChild(d);setTimeout(function(){d.style.opacity=\"0\";d.style.transition=\"all .25s\";setTimeout(function(){d.remove();},280);},2800);}',\n'document.getElementById(\"bt\").addEventListener(\"change\",function(){var cb=this;var v=cb.checked;cb.disabled=true;fetch(\"/webhook/admin-bot-toggle\",{method:\"POST\",headers:{\"Content-Type\":\"application/json\"},body:JSON.stringify({enabled:v})}).then(function(r){if(r.ok){document.getElementById(\"bsl\").textContent=v?\"🟢 Бот включён\":\"🔴 Бот выключен\";ts(v?\"Бот включён\":\"Бот выключен\",\"s\");}else{cb.checked=!v;ts(\"Ошибка\",\"error\");}}).catch(function(){cb.checked=!v;ts(\"Ошибка сети\",\"error\");}).finally(function(){cb.disabled=false;});});',\n'document.getElementById(\"spb\").addEventListener(\"click\",function(){var t=document.getElementById(\"pte\").value.trim();if(!t){ts(\"Промпт не может быть пустым\",\"error\");return;}var b=this;b.disabled=true;var oldText=b.innerHTML;b.innerHTML=\\'<span class=\"spin\"></span> Сохранение\\';fetch(\"/webhook/admin-prompt-save\",{method:\"POST\",headers:{\"Content-Type\":\"application/json\"},body:JSON.stringify({prompt:t})}).then(function(r){if(r.ok){ts(\"💾 Промпт сохранён\",\"s\");setTimeout(function(){location.reload();},700);}else{ts(\"Ошибка\",\"error\");b.disabled=false;b.innerHTML=oldText;}}).catch(function(){ts(\"Ошибка сети\",\"error\");b.disabled=false;b.innerHTML=oldText;});});',\n'document.querySelectorAll(\"[data-rollback]\").forEach(function(btn){btn.addEventListener(\"click\",function(){var id=btn.dataset.rollback;if(!confirm(\"Откатить промпт на эту версию?\"))return;fetch(\"/webhook/admin-prompt-rollback\",{method:\"POST\",headers:{\"Content-Type\":\"application/json\"},body:JSON.stringify({version_id:id})}).then(function(r){if(r.ok){ts(\"↶ Откат выполнен\",\"s\");setTimeout(function(){location.reload();},700);}else ts(\"Ошибка\",\"error\");});});});',\n'document.querySelectorAll(\".abtn-del\").forEach(function(btn){btn.addEventListener(\"click\",function(){var id=btn.dataset.id;if(!confirm(\"Удалить файл и все его чанки?\"))return;fetch(\"/webhook/admin-doc-delete\",{method:\"POST\",headers:{\"Content-Type\":\"application/json\"},body:JSON.stringify({id:id})}).then(function(r){if(r.ok){ts(\"🗑 Удалён\",\"s\");setTimeout(function(){location.reload();},600);}else ts(\"Ошибка\",\"error\");});});});',\n'function upF(inp){var f=inp.files[0];if(!f)return;if(f.size>10*1024*1024){ts(\"Файл больше 10 МБ\",\"error\");return;}ts(\"📤 Загрузка и обработка...\",\"info\");var fd=new FormData();fd.append(\"file\",f);fetch(\"/webhook/admin-doc-upload\",{method:\"POST\",body:fd}).then(function(r){return r.json();}).then(function(d){if(d.ok){ts(\"✅ Загружено: \"+d.chunks+\" чанков\",\"s\");setTimeout(function(){location.reload();},800);}else ts(\"Ошибка: \"+(d.error||\"unknown\"),\"error\");}).catch(function(){ts(\"Ошибка сети\",\"error\");}).finally(function(){inp.value=\"\";});}',\n'document.getElementById(\"fi\").addEventListener(\"change\",function(){upF(this);});',\n'var uz=document.getElementById(\"uz\");[\"dragenter\",\"dragover\"].forEach(function(e){uz.addEventListener(e,function(ev){ev.preventDefault();uz.classList.add(\"drag\");});});[\"dragleave\",\"drop\"].forEach(function(e){uz.addEventListener(e,function(ev){ev.preventDefault();uz.classList.remove(\"drag\");});});uz.addEventListener(\"drop\",function(ev){var f=ev.dataTransfer.files[0];if(f){document.getElementById(\"fi\").files=ev.dataTransfer.files;upF(document.getElementById(\"fi\"));}});',\n'<\\/script>',\n'</body></html>'\n].join('');\n\nreturn [{ json: { html } }];"
+      },
+      "id": "082abf27-2696-4003-ab64-fe5b7d838817",
+      "name": "Build Panel HTML",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2800,
+        880
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.html }}",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
+              }
+            ]
+          }
+        }
+      },
+      "id": "b4a2d307-cf6b-42f9-a289-5c6683ed1391",
+      "name": "Respond Panel",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        3008,
+        880
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "admin-bot-toggle",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "3a14a53b-72aa-4d06-bf68-e5dd7abc4a1e",
+      "name": "POST /admin-bot-toggle",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        2128,
+        1232
+      ],
+      "webhookId": "admin-bot-toggle"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE bot_settings SET is_enabled = $1, updated_at = now() WHERE id = (SELECT id FROM bot_settings ORDER BY id DESC LIMIT 1);",
+        "options": {
+          "queryReplacement": "={{ $json.body.enabled }}"
+        }
+      },
+      "id": "5aa72d03-dc6f-48e2-8058-d4afc225b086",
+      "name": "Update Bot Enabled",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        2352,
+        1232
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "jWMCt3Dk4zhuBOtZ",
+          "name": "web_site_dash"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ok:true}) }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "41355f78-843c-41f7-b013-1f63b556c545",
+      "name": "Toggle Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        2576,
+        1232
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "admin-prompt-save",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "6e629ffe-4cd6-43f1-a5a4-d2e4d1c07cf4",
+      "name": "POST /admin-prompt-save",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        2128,
+        1376
+      ],
+      "webhookId": "admin-prompt-save"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO prompt_versions (system_prompt, note) SELECT system_prompt, 'Auto-saved at ' || now()::text FROM bot_settings ORDER BY id DESC LIMIT 1; UPDATE bot_settings SET system_prompt = $1, updated_at = now() WHERE id = (SELECT id FROM bot_settings ORDER BY id DESC LIMIT 1);",
+        "options": {
+          "queryReplacement": "={{ $json.body.prompt }}"
+        }
+      },
+      "id": "6f46910e-d321-4418-99b9-f584c5522fca",
+      "name": "Save Prompt + Version",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        2352,
+        1376
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "jWMCt3Dk4zhuBOtZ",
+          "name": "web_site_dash"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ok:true}) }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "5cda720c-656b-46d7-aa00-e21046b7e4b2",
+      "name": "Prompt Save Resp",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        2576,
+        1376
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "admin-prompt-rollback",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "5e1691dc-e48e-4c1c-a2fc-7e6f9aa8903a",
+      "name": "POST /admin-prompt-rollback",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        2128,
+        1520
+      ],
+      "webhookId": "admin-prompt-rollback"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO prompt_versions (system_prompt, note) SELECT system_prompt, 'Before rollback at ' || now()::text FROM bot_settings ORDER BY id DESC LIMIT 1; UPDATE bot_settings SET system_prompt = (SELECT system_prompt FROM prompt_versions WHERE id = $1), updated_at = now() WHERE id = (SELECT id FROM bot_settings ORDER BY id DESC LIMIT 1);",
+        "options": {
+          "queryReplacement": "={{ $json.body.version_id }}"
+        }
+      },
+      "id": "623f5aba-376e-4826-8767-2f108d0f59f9",
+      "name": "Rollback Prompt",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        2352,
+        1520
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "jWMCt3Dk4zhuBOtZ",
+          "name": "web_site_dash"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ok:true}) }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "6c25be08-f745-4530-8eb0-e8c26d652fdc",
+      "name": "Rollback Resp",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        2576,
+        1520
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "admin-doc-delete",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "2bb5f67d-1a64-46cd-9b34-1cadc3a28090",
+      "name": "POST /admin-doc-delete",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        2128,
+        1680
+      ],
+      "webhookId": "admin-doc-delete"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "DELETE FROM n8n_vectors WHERE document_id = $1; DELETE FROM documents WHERE id = $1;",
+        "options": {
+          "queryReplacement": "={{ $json.body.id }}"
+        }
+      },
+      "id": "886b4665-8f5a-4e00-8bbb-478cadfcd137",
+      "name": "Delete Document",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        2352,
+        1680
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "jWMCt3Dk4zhuBOtZ",
+          "name": "web_site_dash"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ok:true}) }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "3cf62be9-b7c7-4328-8d5a-a80fcf171c9a",
+      "name": "Doc Delete Resp",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        2576,
+        1680
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "admin-doc-upload",
+        "responseMode": "responseNode",
+        "options": {
+          "rawBody": false
+        }
+      },
+      "id": "8d52c1b6-0592-4cbf-bbda-61adc711f3d3",
+      "name": "POST /admin-doc-upload",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        2128,
+        1872
+      ],
+      "webhookId": "admin-doc-upload"
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "options": {}
+      },
+      "id": "8cf7473c-24b7-46b1-b3cd-6ee38ec943fb",
+      "name": "Extract Text",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        2352,
+        1872
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "\nconst item = $input.first();\nconst text = item.json.text || item.json.data || item.json.content || '';\nconst binary = item.binary && (item.binary.file || item.binary.data) || {};\nconst filename = binary.fileName || item.json.filename || 'document.txt';\nconst ext = (filename.split('.').pop() || 'txt').toLowerCase();\n\nif (!text || text.length < 50) {\n  throw new Error('Текст слишком короткий: ' + text.length);\n}\n\nconst cleanText = text.replace(/\\s+/g, ' ').replace(/[\\u0000-\\u001F\\u007F]/g, '').trim();\n\nconst CHUNK_SIZE = 800;\nconst OVERLAP = 80;\nconst MAX_CHUNKS = 50;\nconst MIN_STEP = 400;\n\nconst chunks = [];\nlet i = 0;\nlet iter = 0;\n\nwhile (i < cleanText.length && chunks.length < MAX_CHUNKS) {\n  iter++;\n  if (iter > 200) throw new Error('Loop guard: ' + iter);\n  \n  let end = Math.min(i + CHUNK_SIZE, cleanText.length);\n  \n  if (end < cleanText.length) {\n    const lastDot = cleanText.lastIndexOf('.', end);\n    const lastSp = cleanText.lastIndexOf(' ', end);\n    const cut = Math.max(lastDot, lastSp);\n    if (cut > i + MIN_STEP) end = cut + 1;\n  }\n  \n  const piece = cleanText.slice(i, end).trim();\n  \n  if (piece.length >= 80 && /[а-яА-Яa-zA-Z0-9]/.test(piece)) {\n    chunks.push(piece);\n  }\n  \n  const nextI = end - OVERLAP;\n  i = (nextI > i) ? nextI : (i + MIN_STEP);\n  \n  if (end >= cleanText.length) break;\n}\n\nif (chunks.length === 0) throw new Error('Нет валидных чанков');\n\nreturn chunks.map((content, idx) => ({\n  json: {\n    content,\n    chunk_index: idx,\n    total_chunks: chunks.length,\n    filename,\n    file_type: ext\n  }\n}));\n"
+      },
+      "id": "872f1d7f-dce4-414f-ab8f-ef931f784ff0",
+      "name": "Chunk Text",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2576,
+        1872
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO documents (filename, file_type, chunks_count) VALUES ($1, $2, $3) RETURNING id;",
+        "options": {
+          "queryReplacement": "={{ $json.filename }},={{ $json.file_type }},={{ $json.total_chunks }}"
+        }
+      },
+      "id": "f8462cc4-7cb5-43cd-acff-033a8ddaac4e",
+      "name": "Insert Document Record",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        2800,
+        1872
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "jWMCt3Dk4zhuBOtZ",
+          "name": "web_site_dash"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "\nconst docId = $('Insert Document Record').first().json.id;\nconst chunks = $('Chunk Text').all();\nreturn chunks.map(c => ({\n  json: { ...c.json, document_id: docId }\n}));\n"
+      },
+      "id": "cc36c06c-c6cd-49dd-aabb-b79c13f93121",
+      "name": "Attach document_id",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3008,
+        1872
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "embedding"
+      },
+      "id": "d409db47-4c1f-4d29-989a-2d52198bbc97",
+      "name": "Embed Chunk",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        3232,
+        1872
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "2CC3ugMnHdGlBbRK",
+          "name": "test_api"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO n8n_vectors (text, metadata, embedding, document_id) VALUES ($1, $2::jsonb, $3::vector, $4);",
+        "options": {
+          "queryReplacement": "={{ $('Attach document_id').item.json.content }},={{ JSON.stringify({filename: $('Attach document_id').item.json.filename, chunk_index: $('Attach document_id').item.json.chunk_index}) }},={{ JSON.stringify($json.data[0].embedding) }},={{ $('Attach document_id').item.json.document_id }}"
+        }
+      },
+      "id": "097bf3d9-3fa6-4eae-bb72-6a3f393b9de4",
+      "name": "Insert Vector",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        3456,
+        1872
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "jWMCt3Dk4zhuBOtZ",
+          "name": "web_site_dash"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ok:true, chunks: $('Chunk Text').all().length, document_id: $('Insert Document Record').first().json.id}) }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "b553c9d7-de53-41e6-9d0b-8ef40462e2ed",
+      "name": "Upload Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        3680,
+        1872
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT id, filename, file_type, chunks_count, uploaded_at FROM documents ORDER BY uploaded_at DESC;",
+        "options": {}
+      },
+      "id": "14052b51-f753-47a9-a5c7-fdf33161735d",
+      "name": "Get Documents3",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        2352,
+        880
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "jWMCt3Dk4zhuBOtZ",
+          "name": "web_site_dash"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "GET /admin": {
+      "main": [
+        [
+          {
+            "node": "Login Page HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "POST /admin-login": {
+      "main": [
+        [
+          {
+            "node": "Check Password",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Password": {
+      "main": [
+        [
+          {
+            "node": "Redirect to Panel",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Redirect Fail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET /admin-panel": {
+      "main": [
+        [
+          {
+            "node": "Get Stats",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Documents3",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Prompt Versions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Stats": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Prompt Versions": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Build Panel HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Panel HTML": {
+      "main": [
+        [
+          {
+            "node": "Respond Panel",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "POST /admin-bot-toggle": {
+      "main": [
+        [
+          {
+            "node": "Update Bot Enabled",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Bot Enabled": {
+      "main": [
+        [
+          {
+            "node": "Toggle Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "POST /admin-prompt-save": {
+      "main": [
+        [
+          {
+            "node": "Save Prompt + Version",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Prompt + Version": {
+      "main": [
+        [
+          {
+            "node": "Prompt Save Resp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "POST /admin-prompt-rollback": {
+      "main": [
+        [
+          {
+            "node": "Rollback Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rollback Prompt": {
+      "main": [
+        [
+          {
+            "node": "Rollback Resp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "POST /admin-doc-delete": {
+      "main": [
+        [
+          {
+            "node": "Delete Document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete Document": {
+      "main": [
+        [
+          {
+            "node": "Doc Delete Resp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "POST /admin-doc-upload": {
+      "main": [
+        [
+          {
+            "node": "Extract Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Text": {
+      "main": [
+        [
+          {
+            "node": "Chunk Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chunk Text": {
+      "main": [
+        [
+          {
+            "node": "Insert Document Record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert Document Record": {
+      "main": [
+        [
+          {
+            "node": "Attach document_id",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Attach document_id": {
+      "main": [
+        [
+          {
+            "node": "Embed Chunk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embed Chunk": {
+      "main": [
+        [
+          {
+            "node": "Insert Vector",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert Vector": {
+      "main": [
+        [
+          {
+            "node": "Upload Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Documents3": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4b2f9159a30002693dd71ebee84388e216f4e8ec09e43e342b6aae2d1f513666"
+  }
+}
