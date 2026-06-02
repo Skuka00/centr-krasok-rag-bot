@@ -15,8 +15,9 @@
 
 Telegram-бот с AI-ассистентом, работающий в формате обычного чата (без команд и меню). Пользователь пишет вопрос на естественном языке — бот отвечает на основе собранной информации о компании.
 
-**Бот:** [@samruk_test_bot](https://t.me/samruk_test_bot)  
-**Админ-панель:** `https://n8n.diku.kz/webhook/admin`  
+**Бот:** [@samruktestkuanyshbot](https://t.me/samruktestkuanyshbot)  
+**Админ-панель:** `https://n8n.diku.kz/webhook/admin`
+**Пароль:** 'Mercedes123'
 **Компания:** [centr-krasok.kz](https://centr-krasok.kz)
 
 ---
@@ -340,11 +341,6 @@ CREATE INDEX ON n8n_vectors USING hnsw (embedding vector_cosine_ops);
 
 ## 👤 Автор
 
-**Saltanat** — самостоятельная разработка MVP  
-Алматы / Астана, Казахстан
+**Kuanysh** — самостоятельная разработка MVP  
+Алматы, Казахстан
 
----
-
-## 📄 Лицензия
-
-MIT
