@@ -1,4 +1,4 @@
-![Architecture](architecture.png)
+[Architecture](architecture.png)
 # 🤖 Telegram AI-ассистент для «Центр Красок №1»
 
 > RAG-чат-бот для сети магазинов лакокрасочной продукции в Казахстане  
