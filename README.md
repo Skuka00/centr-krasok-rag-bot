@@ -1,4 +1,9 @@
-[Architecture](architecture.png)
+![n8n](https://img.shields.io/badge/n8n-workflow-FF6D5A?logo=n8n)
+![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4o--mini-412991?logo=openai)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17-336791?logo=postgresql)
+![pgvector](https://img.shields.io/badge/pgvector-0.8-336791)
+![Telegram](https://img.shields.io/badge/Telegram-Bot-26A5E4?logo=telegram)
+![Architecture](architecture.png)
 # 🤖 Telegram AI-ассистент для «Центр Красок №1»
 
 > RAG-чат-бот для сети магазинов лакокрасочной продукции в Казахстане  
